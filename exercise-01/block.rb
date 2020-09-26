@@ -2,23 +2,24 @@ require 'digest'
 
 class Block
   MESSAGE = "Origem: {sender}\nDestino: {recipient}\nMensagem: Ola {recipient}. Meu nome é {sender}.\n"
-
-  attr_reader :hash, :message
+  BLOCK_STRUCTURE = "{message}Hash: {hash}\n"
 
   def initialize(sender:, recipient:)
     @sender=sender
     @recipient=recipient
-    @message=mount_message
-    @hash=get_block_hash
+  end
+
+  def get_block
+    BLOCK_STRUCTURE.gsub(/{message}/,message).gsub(/{hash}/, hash)
   end
 
   private
 
-  def mount_message
+  def message
     MESSAGE.gsub(/{recipient}/, @recipient).gsub(/{sender}/, @sender)
   end
 
-  def get_block_hash
-    Digest::SHA256.hexdigest @message
+  def hash
+    Digest::SHA256.hexdigest message
   end
 end
