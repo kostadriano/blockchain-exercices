@@ -1,4 +1,5 @@
 require 'digest'
+require_relative 'hash'
 
 class Block
   MESSAGE = "Origem: {sender}\nDestino: {recipient}\nMensagem: Ola {recipient}. Meu nome é {sender}.\n"
@@ -20,6 +21,6 @@ class Block
   end
 
   def hash
-    Digest::SHA256.hexdigest message
+    Hash.generate message
   end
 end

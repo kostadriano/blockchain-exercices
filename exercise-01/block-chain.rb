@@ -1,8 +1,33 @@
 require 'fileutils'
-require_relative 'block.rb'
+require_relative 'block'
+require_relative 'hash'
 
 class BlockChain
   BLOCKS_FILES_NAMES = "blocks/block_*.txt"
+
+  def validate_blockchain
+    last_block_number = persisted_blocks_length
+    last_block_path = get_file_path last_block_number
+
+    while(File.exist? last_block_path)
+      block = deserialize_block(read_file_content(last_block_path))
+
+      new_generated_hash = Hash.generate block[:content]
+
+      raise raise_block_error(last_block_path) if new_generated_hash.strip != block[:hash].strip
+
+      last_block_number -= 1
+      last_block_path = get_file_path last_block_number
+
+      if File.exist? last_block_path
+        last_block = deserialize_block(read_file_content(last_block_path))
+
+        raise raise_block_error(last_block_path) if block[:previous_hash] != last_block[:hash]
+      end
+    end
+
+    true
+  end
 
   def create_block(sender:, recipient:)
     Block.new(sender: sender, recipient: recipient)
@@ -21,9 +46,11 @@ class BlockChain
   def persist block_message
     create_directory
 
+    validate_blockchain
+
     block = mount_block block_message
 
-    file = File.open("blocks/block_#{persisted_blocks_length + 1}.txt", "w")
+    file = File.open(get_file_path(persisted_blocks_length + 1), "w")
 
     file.puts(block)
 
@@ -31,7 +58,7 @@ class BlockChain
   end
 
   def get_previous_block_hash
-    last_block_path = "blocks/block_#{persisted_blocks_length}.txt"
+    last_block_path = get_file_path persisted_blocks_length
 
     return mount_previous_hash 'Vazio' unless File.exist? last_block_path
 
@@ -56,5 +83,25 @@ class BlockChain
     unless File.directory?('blocks')
       FileUtils.mkdir_p('blocks')
     end
+  end
+
+  def get_file_path block_number
+    "blocks/block_#{block_number}.txt"
+  end
+
+  def deserialize_block content
+    content.match(/(?<content>.*)Hash: (?<hash>.*)Hash Anterior: (?<previous_hash>.*)/m)
+  end
+
+  def read_file_content file_path
+    file = File.open(file_path)
+    content = file.read
+    file.close
+
+    return content
+  end
+
+  def raise_block_error block
+    raise "Invalid hash on #{block}"
   end
 end
