@@ -3,7 +3,6 @@
 Para usar os contratos solidity com ruby tem a gem `ethereum-ruby`.
 Usando a gem para utilizar um contrato:
 
-employee, string memory insertedDate)
 ```ruby
   client = Ethereum::IpcClient.new("ethereum_testnet/geth.ipc")
 
