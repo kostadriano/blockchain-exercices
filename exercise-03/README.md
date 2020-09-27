@@ -78,3 +78,62 @@ curl -H "Content-Type: application/json" -X POST -d '{"tx_hex":"0100000001000000
   }
 }
 ```
+
+A transaction decodada:
+```json
+{
+    "addresses": [
+        "mr9xV9aNnfv6a1LhGsvVmFGW63Mn3ZwtJz",
+        "mxfcG5TNdS5RsUit4cfDSx32sQGdC6zqy1",
+        "mkHS9ne12qx9pS9VojpwU5xtRd4T7X7ZUt"
+    ],
+    "block_height": -1,
+    "block_index": -1,
+    "confirmations": 0,
+    "double_spend": false,
+    "fees": 0,
+    "hash": "406b1259576a485887bee5aa15b8bff06f492dffb52b912b2cfa62897f22933f",
+    "inputs": [
+        {
+            "age": 0,
+            "output_index": -1,
+            "script_type": "empty",
+            "sequence": 4294967295
+        }
+    ],
+    "outputs": [
+        {
+            "addresses": [
+                "mr9xV9aNnfv6a1LhGsvVmFGW63Mn3ZwtJz"
+            ],
+            "script": "76a91474b0cedfcbc42c94c074433084a1eccda938eb0f88ac",
+            "script_type": "pay-to-pubkey-hash",
+            "value": 250000
+        },
+        {
+            "addresses": [
+                "mxfcG5TNdS5RsUit4cfDSx32sQGdC6zqy1"
+            ],
+            "script": "76a914bc1d288b546086c4db036149d42530825c62115588ac",
+            "script_type": "pay-to-pubkey-hash",
+            "value": 50000
+        },
+        {
+            "addresses": [
+                "mkHS9ne12qx9pS9VojpwU5xtRd4T7X7ZUt"
+            ],
+            "script": "76a914344a0f48ca150ec2b903817660b9b68b13a6702688ac",
+            "script_type": "pay-to-pubkey-hash",
+            "value": 750000
+        }
+    ],
+    "preference": "low",
+    "received": "2020-09-27T16:48:57.191130041Z",
+    "relayed_by": "107.23.249.125",
+    "size": 153,
+    "total": 1050000,
+    "ver": 1,
+    "vin_sz": 1,
+    "vout_sz": 3
+}
+```
